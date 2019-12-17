@@ -1,19 +1,38 @@
 package com.example.homeworkkotlin72
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.net.NetworkInfo
+import java.net.InetAddress
+
 
 class MainActivity : AppCompatActivity() {
     private var number: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        addIntoImageView()
+        isNetworkConnected()
+    }
 
+    private fun isNetworkConnected() {
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnected == true
+        if (isConnected) {
+            addIntoImageView()
+        } else {
+            imageView.setImageResource(R.drawable.image)
+            return
+        }
     }
 
     private fun addIntoImageView() {
